@@ -1,7 +1,8 @@
 import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 import { useEffect, useState } from "react";
-import { FaArrowsSpin } from "react-icons/fa6";
+import { FaTimes } from "react-icons/fa";
+import { FaArrowsSpin} from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
@@ -79,6 +80,21 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
         break;
       }
     }
+  };
+
+  // Delete image handlers
+  const handleDeleteImage = () => {
+    if (image) URL.revokeObjectURL(image);
+    setImage(null);
+    setImageFile(null);
+    setImageUrl("");
+  };
+
+  const handleDeleteImage2 = () => {
+    if (image2) URL.revokeObjectURL(image2);
+    setImage2(null);
+    setImageFile2(null);
+    setImageUrl2("");
   };
 
   useEffect(() => {
@@ -174,6 +190,29 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
               margin-left: -30px;
               width: 130px !important;
             }
+          }
+          .image-wrapper {
+            position: relative;
+            width: 120px;
+            height: 100px;
+          }
+          .delete-button {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            padding: 2px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3100;
+          }
+          .delete-button:hover {
+            background-color: rgba(255, 0, 0, 1);
           }
         `}
       </style>
@@ -521,24 +560,24 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
                     <span className="font-bold">%</span>
                   </td>
                   <td className="border border-black pl-2 pr-2">
-                    <input type="text" defaultValue="Osmium" className="w-[80px] font-bold"/>
+                    <input type="text" defaultValue={"Osmium"} className="w-[80px] font-bold" />
                   </td>
                   <td className="border border-black px-4">
                     <input
                       type="text"
-                      defaultValue="0.00"
+                      defaultValue={"0.00"}
                       className="w-[35px] print-input font-semibold"
                       onKeyDown={handleKeyDown}
                     />
                     <span className="font-bold">%</span>
                   </td>
-                  <td className="border border-black" pl-2 pr-2>
-                    <input type="text" defaultValue="Manganese" className="w-[80px] font-bold"/>
+                  <td className="border border-black pl-2 pr-2">
+                    <input type="text" defaultValue={"Manganese"} className="w-[80px] font-bold" />
                   </td>
-                  <td className="border border-black  px-4">
+                  <td className="border border-black px-4">
                     <input
                       type="text"
-                      defaultValue="0.00"
+                      defaultValue={"0.00"}
                       className="w-[35px] print-input font-semibold"
                       onKeyDown={handleKeyDown}
                     />
@@ -557,28 +596,50 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
           className="flex flex-col justify-center items-center image-container w-[200px] gap-2 absolute bottom-[68px] right-2"
           style={{ width: "200px" }}
         >
-          <div
-            className="w-[120px] max-w-[120px h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
-            onPaste={handlePaste(setImage, setImageFile)}
-            tabIndex={0}
-            aria-label="Paste first image here"
-          >
-            {image ? (
-              <img src={image} alt="Image 1" className="w-[120px] h-[100px] object-cover object-center"/>
-            ) : (
-              <span className="text-gray-500 text-sm hide">Click and Paste 1</span>
+          <div className="image-wrapper">
+            <div
+              className="w-[120px] max-w-[120px] h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
+              onPaste={handlePaste(setImage, setImageFile)}
+              tabIndex={0}
+              aria-label="Paste first image here"
+            >
+              {image ? (
+                <img src={image} alt="Image 1" className="w-[120px] h-[100px] object-cover object-center" />
+              ) : (
+                <span className="text-gray-500 text-sm hide">Click and Paste 1</span>
+              )}
+            </div>
+            {image && (
+              <button
+                className="delete-button hide"
+                onClick={handleDeleteImage}
+                aria-label="Delete first image"
+              >
+                <FaTimes />
+              </button>
             )}
           </div>
-          <div
-            className="w-[120px] max-w-[120px] h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
-            onPaste={handlePaste(setImage2, setImageFile2)}
-            tabIndex={0}
-            aria-label="Paste second image here"
-          >
-            {image2 ? (
-              <img src={image2} alt="Image 2" className="w-[120px] h-[100px] object-cover object-center"/>
-            ) : (
-              <span className="text-gray-500 text-sm hide">Click and Paste 2</span>
+          <div className="image-wrapper">
+            <div
+              className="w-[120px] max-w-[120px] h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
+              onPaste={handlePaste(setImage2, setImageFile2)}
+              tabIndex={0}
+              aria-label="Paste second image here"
+            >
+              {image2 ? (
+                <img src={image2} alt="Image 2" className="w-[120px] h-[100px] object-cover object-center" />
+              ) : (
+                <span className="text-gray-500 text-sm hide">Click and Paste 2</span>
+              )}
+            </div>
+            {image2 && (
+              <button
+                className="delete-button hide"
+                onClick={handleDeleteImage2}
+                aria-label="Delete second image"
+              >
+                <FaTimes />
+              </button>
             )}
           </div>
         </div>
