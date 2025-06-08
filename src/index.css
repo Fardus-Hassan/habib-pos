@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* input{
+  border: none !important;
+  outline: none !important;
+} */
+
+@media print {
+  .hide{
+    display: none !important;
+  }
+}
