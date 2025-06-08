@@ -1,6 +1,6 @@
 import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowsSpin } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -11,11 +11,9 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
   const [image, setImage] = useState(fetchCustomer?.image || null);
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
-  const fileInputRef = useRef(null);
   const [image2, setImage2] = useState(fetchCustomer?.image2 || null);
   const [imageFile2, setImageFile2] = useState(null);
   const [imageUrl2, setImageUrl2] = useState("");
-  const fileInputRef2 = useRef(null);
   const [inputValues, setInputValues] = useState({});
   const [currentTime, setCurrentTime] = useState({ date: "", time: "" });
 
@@ -67,32 +65,6 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
       ...prev,
       [name]: event.target.value,
     }));
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
-    }
-  };
-
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleImageChange2 = (e) => {
-    const file = e.target.files[0];
-    setImageFile2(file);
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage2(imageUrl);
-    }
-  };
-
-  const handleClick2 = () => {
-    fileInputRef2.current.click();
   };
 
   // Copy-paste handlers
@@ -194,20 +166,13 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
               bottom: 68px;
               right: 8px;
               width: 200px;
-            //   display: flex;
-            //   flex-direction: column;
-            //   gap: 2px;
-            //   align-items: center;
             }
             .single-image .image-container img {
-            //   right: calc(50% - 60px);
-            position: absolute;
-            z-index:3000;
-            margin-top : 120px;
-            margin-left : -30px;
-            
-             width: 130px !important;
-            //  hight: 130px !important;
+              position: absolute;
+              z-index: 3000;
+              margin-top: 120px;
+              margin-left: -30px;
+              width: 130px !important;
             }
           }
         `}
@@ -556,24 +521,24 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
                     <span className="font-bold">%</span>
                   </td>
                   <td className="border border-black pl-2 pr-2">
-                    <input type="text" defaultValue={"Osmium"} className="w-[80px] font-bold" />
+                    <input type="text" defaultValue="Osmium" className="w-[80px] font-bold"/>
                   </td>
                   <td className="border border-black px-4">
                     <input
                       type="text"
-                      defaultValue={"0.00"}
+                      defaultValue="0.00"
                       className="w-[35px] print-input font-semibold"
                       onKeyDown={handleKeyDown}
                     />
                     <span className="font-bold">%</span>
                   </td>
-                  <td className="border border-black pl-2 pr-2">
-                    <input type="text" defaultValue={"Manganese"} className="w-[80px] font-bold" />
+                  <td className="border border-black" pl-2 pr-2>
+                    <input type="text" defaultValue="Manganese" className="w-[80px] font-bold"/>
                   </td>
-                  <td className="border border-black px-4">
+                  <td className="border border-black  px-4">
                     <input
                       type="text"
-                      defaultValue={"0.00"}
+                      defaultValue="0.00"
                       className="w-[35px] print-input font-semibold"
                       onKeyDown={handleKeyDown}
                     />
@@ -590,45 +555,31 @@ const NewReceipt = ({ fetchCustomer, invoiceQuery }) => {
 
         <div
           className="flex flex-col justify-center items-center image-container w-[200px] gap-2 absolute bottom-[68px] right-2"
-          onPaste={handlePaste(setImage, setImageFile)}
+          style={{ width: "200px" }}
         >
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-              className="hidden"
-            />
-            <div
-              className="w-[120px] max-w-[120px] h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
-              onClick={handleClick}
-            >
-              {image ? (
-                <img src={image} alt="Type" className="w-[120px] h-[100px] object-cover object-center" />
-              ) : (
-                <span className="text-gray-500 text-sm hide">Image 1</span>
-              )}
-            </div>
+          <div
+            className="w-[120px] max-w-[120px h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
+            onPaste={handlePaste(setImage, setImageFile)}
+            tabIndex={0}
+            aria-label="Paste first image here"
+          >
+            {image ? (
+              <img src={image} alt="Image 1" className="w-[120px] h-[100px] object-cover object-center"/>
+            ) : (
+              <span className="text-gray-500 text-sm hide">Click and Paste 1</span>
+            )}
           </div>
-          <div onPaste={handlePaste(setImage2, setImageFile2)}>
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef2}
-              onChange={handleImageChange2}
-              className="hidden"
-            />
-            <div
-              className="w-[120px] max-w-[120px] h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
-              onClick={handleClick2}
-            >
-              {image2 ? (
-                <img src={image2} alt="Sign" className="w-[120px] h-[100px] object-cover object-center" />
-              ) : (
-                <span className="text-gray-500 text-sm hide">Image 1</span>
-              )}
-            </div>
+          <div
+            className="w-[120px] max-w-[120px] h-[100px] p-1 cursor-pointer flex items-center justify-center overflow-hidden"
+            onPaste={handlePaste(setImage2, setImageFile2)}
+            tabIndex={0}
+            aria-label="Paste second image here"
+          >
+            {image2 ? (
+              <img src={image2} alt="Image 2" className="w-[120px] h-[100px] object-cover object-center"/>
+            ) : (
+              <span className="text-gray-500 text-sm hide">Click and Paste 2</span>
+            )}
           </div>
         </div>
 
